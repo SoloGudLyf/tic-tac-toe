@@ -1,0 +1,29 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+h1 {
+  text-align: center;
+}
+
+
+
+
+.container {
+    margin: 7vh auto;
+  display: grid;
+  width: 35vw;
+  height: 60vh;
+  background-color: red;
+  grid-template-columns: repeat(3,1fr);
+  grid-template-rows: repeat(3,1fr);
+  font-size: 2rem;
+}
+.container div{
+    border: 1px solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
