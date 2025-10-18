@@ -4,6 +4,67 @@ const player2 = { marker: "O" };
 let playerTurn = 1;
 const container = document.querySelector(".container");
 let containerChildren = [];
+const manageGame = gameLogic();
+document.querySelector(".start").addEventListener("click", restartGame);
+container.addEventListener("click", function (e) {
+    const para = document.querySelector(".msg");
+  if (para.textContent !== "") {
+    return;
+  }
+  DisplayValue(e);
+});
+
+function restartGame() {
+    const para = document.querySelector(".msg");
+    para.textContent = ""
+  gameBoard = [];
+  for (i = 0; i < 3; i++) {
+    gameBoard[i] = [];
+    for (j = 0; j < 3; j++) {
+      gameBoard[i].push([]);
+    }
+  }
+  mapElementsToDOM();
+}
+
+function DisplayValue(e) {
+  let elemClickedClass = e.target.className;
+  switch (elemClickedClass) {
+    case "one":
+      manageGame.playRound(1, 1);
+      break;
+    case "two":
+      manageGame.playRound(1, 2);
+      break;
+    case "three":
+      manageGame.playRound(1, 3);
+      break;
+    case "four":
+      manageGame.playRound(2, 1);
+      break;
+    case "five":
+      manageGame.playRound(2, 2);
+      break;
+    case "six":
+      manageGame.playRound(2, 3);
+      break;
+    case "seven":
+      manageGame.playRound(3, 1);
+      break;
+    case "eight":
+      manageGame.playRound(3, 2);
+      break;
+    case "nine":
+      manageGame.playRound(3, 3);
+      break;
+    default:
+      break;
+  }
+  const p = document.querySelector(".msg");
+  mapElementsToDOM();
+  p.textContent = manageGame.checkWinner();
+}
+
 for (const element of container.children) {
   containerChildren.push(element);
 }
@@ -63,6 +124,14 @@ function gameLogic() {
 
   let winner;
   const checkWinner = function () {
+    let piecePlaced = 0;
+    for (const element of gameBoard) {
+      for (const elem of element) {
+        if (elem === "X" || elem === "O") {
+          piecePlaced++;
+        }
+      }
+    }
     const winSituations = [
       [
         [1, 1],
@@ -112,46 +181,16 @@ function gameLogic() {
       ) {
         let winnerValue = getValue(i[0][0], i[0][1]);
         winner = winnerValue === "X" ? "Player1" : "Player2";
-        return `The winner is ${winner}`;
+        return `The winner is ${winner}, Game Over`;
+      } else if (piecePlaced === 9) {
+        return "Game Over, It's a draw";
       }
     }
-    return `No winner yet`;
-  };
-
-  const gameOver = function () {
-    let piecePlaced = 0;
-    for (const element of gameBoard) {
-      for (const elem of element) {
-        if (elem === "X" || elem === "O") {
-          piecePlaced++;
-        }
-      }
-    }
-    if (checkWinner() === `The winner is ${winner}`) {
-      restartGame();
-      return "Game Over";
-    } else if (
-      checkWinner() !== `The winner is ${winner}` &&
-      piecePlaced === 9
-    ) {
-      return "Game Over, It's a draw";
-    }
-    return "Game Not Over Yet";
-  };
-
-  const restartGame = function () {
-    gameBoard = [];
-    for (i = 0; i < 3; i++) {
-      gameBoard[i] = [];
-      for (j = 0; j < 3; j++) {
-        gameBoard[i].push([]);
-      }
-    }
-    mapElementsToDOM();
+    return;
   };
 
   const getValue = function (row, column) {
     return gameBoard[row - 1][column - 1];
   };
-  return { printBoard, playRound, checkWinner, getValue, gameOver };
+  return { printBoard, playRound, checkWinner, getValue };
 }
