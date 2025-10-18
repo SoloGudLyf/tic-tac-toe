@@ -59,12 +59,12 @@ button:active {
   background-color: rgb(175, 175, 175);
 }
 
-input{
-    padding: 0.5px 3px;
-    font-size: 1.05rem;
+input {
+  padding: 0.5px 3px;
+  font-size: 1.05rem;
 }
 
-p{
-    margin-left: 10px;
-    font-size: 1.1rem;
+p {
+    text-align: center;
+  font-size: 1.4rem;
 }
