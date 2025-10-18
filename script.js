@@ -5,18 +5,32 @@ let playerTurn = 1;
 const container = document.querySelector(".container");
 let containerChildren = [];
 const manageGame = gameLogic();
-document.querySelector(".start").addEventListener("click", restartGame);
+
+document.querySelector(".startBtn").addEventListener("click", restartGame);
+
+
+// Display element upon clicking square
+
 container.addEventListener("click", function (e) {
-    const para = document.querySelector(".msg");
+  const para = document.querySelector(".msg");
   if (para.textContent !== "") {
+    return;
+  }
+  if (
+    document.querySelector(".player1").value.trim() === "" ||
+    document.querySelector(".player2").value.trim() === ""
+  ) {
+    document.querySelector(".startBtn").click();
     return;
   }
   DisplayValue(e);
 });
 
 function restartGame() {
-    const para = document.querySelector(".msg");
-    para.textContent = ""
+  const para = document.querySelector(".msg");
+  para.textContent = "";
+  player1.name = document.querySelector(".player1").value.trim();
+  player2.name = document.querySelector(".player2").value.trim();
   gameBoard = [];
   for (i = 0; i < 3; i++) {
     gameBoard[i] = [];
@@ -25,6 +39,7 @@ function restartGame() {
     }
   }
   mapElementsToDOM();
+  playerTurn = 1;
 }
 
 function DisplayValue(e) {
@@ -69,6 +84,7 @@ for (const element of container.children) {
   containerChildren.push(element);
 }
 
+
 const mapElementsToDOM = function () {
   for (let i = 0; i < 3; i++) {
     containerChildren[i].textContent = gameBoard[0][i];
@@ -90,6 +106,9 @@ const getGameBoard = (function () {
   }
   mapElementsToDOM();
 })();
+
+
+// Factory Functions
 
 function gameLogic() {
   const printBoard = function () {
@@ -180,12 +199,13 @@ function gameLogic() {
         i[0][0] !== ""
       ) {
         let winnerValue = getValue(i[0][0], i[0][1]);
-        winner = winnerValue === "X" ? "Player1" : "Player2";
+        winner = winnerValue === "X" ? player1.name : player2.name;
         return `The winner is ${winner}, Game Over`;
-      } else if (piecePlaced === 9) {
-        return "Game Over, It's a draw";
       }
     }
+    if (piecePlaced === 9) {
+        return "Game Over, It's a draw";
+      }
     return;
   };
 
